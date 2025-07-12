@@ -2,7 +2,7 @@
 """
 day5_test_demo_fixed.py
 Day 5: Fixed Test and Demonstration Script
-Resolves the protocol string vs enum issue
+Resolves the import issues and protocol string vs enum problems
 """
 
 import sys
@@ -29,14 +29,14 @@ def test_day5_components():
         test_results.append(("Enhanced Engine Import", False))
         return test_results
     
-    # Test 2: Fixed Integration Layer Import
+    # Test 2: Integration Layer Import (fixed import path)
     try:
-        from day5_integration_fix import Day5IntegratedAnalyzer
-        print("✅ Day 5 Fixed Integration Layer imported successfully")
-        test_results.append(("Fixed Integration Import", True))
+        from day5_integration import Day5IntegratedAnalyzer
+        print("✅ Day 5 Integration Layer imported successfully")
+        test_results.append(("Integration Import", True))
     except ImportError as e:
-        print(f"❌ Day 5 Fixed Integration Layer import failed: {e}")
-        test_results.append(("Fixed Integration Import", False))
+        print(f"❌ Day 5 Integration Layer import failed: {e}")
+        test_results.append(("Integration Import", False))
     
     # Test 3: FastAPI Integration Import
     try:
@@ -69,7 +69,7 @@ def test_fixed_enhanced_analysis():
     print("-" * 35)
     
     try:
-        from day5_integration_fix import Day5IntegratedAnalyzer
+        from day5_integration import Day5IntegratedAnalyzer
         
         # Initialize fixed analyzer
         analyzer = Day5IntegratedAnalyzer()
@@ -126,7 +126,7 @@ def test_protocol_type_fixing():
     print("-" * 30)
     
     try:
-        from day5_integration_fix import Day5IntegratedAnalyzer
+        from day5_integration import Day5IntegratedAnalyzer
         
         analyzer = Day5IntegratedAnalyzer()
         
@@ -209,7 +209,7 @@ def test_mock_data_generation():
     print("-" * 30)
     
     try:
-        from day5_integration_fix import Day5IntegratedAnalyzer
+        from day5_integration import Day5IntegratedAnalyzer
         
         analyzer = Day5IntegratedAnalyzer()
         
@@ -258,7 +258,7 @@ def demonstrate_fixed_day5():
     print("=" * 45)
     
     try:
-        from day5_integration_fix import Day5IntegratedAnalyzer
+        from day5_integration import Day5IntegratedAnalyzer
         
         analyzer = Day5IntegratedAnalyzer()
         
@@ -307,6 +307,37 @@ def demonstrate_fixed_day5():
         traceback.print_exc()
         return False
 
+def test_fastapi_integration():
+    """Test FastAPI integration components"""
+    print("\n🌐 FastAPI Integration Test")
+    print("-" * 30)
+    
+    try:
+        from day5_fastapi_integration import create_day5_router, integrate_day5_with_fastapi
+        from fastapi import FastAPI
+        
+        # Test router creation
+        router = create_day5_router()
+        print("✅ Day 5 FastAPI router created successfully")
+        
+        # Test integration with FastAPI app
+        app = FastAPI()
+        integrate_day5_with_fastapi(app)
+        print("✅ Day 5 integrated with FastAPI app successfully")
+        
+        # Check routes
+        routes = [route.path for route in app.routes]
+        enhanced_routes = [route for route in routes if 'enhanced' in route]
+        print(f"   🛣️  Enhanced routes added: {len(enhanced_routes)}")
+        
+        return True
+        
+    except Exception as e:
+        print(f"❌ FastAPI integration test failed: {e}")
+        import traceback
+        traceback.print_exc()
+        return False
+
 def main():
     """Main fixed test and demonstration function"""
     print("🔬 DAY 5 - FIXED ENHANCED LATENCY ANALYSIS ENGINE")
@@ -321,30 +352,44 @@ def main():
     
     # Check if basic components are available
     enhanced_engine_available = any(result for name, result in component_tests if "Enhanced Engine Import" in name)
+    integration_available = any(result for name, result in component_tests if "Integration Import" in name)
     
     if not enhanced_engine_available:
         print("\n❌ Day 5 Enhanced Engine not available - cannot continue")
         return False
     
     # Fixed Enhanced Analysis Testing
-    fixed_analysis_test = test_fixed_enhanced_analysis()
-    all_tests.append(("Fixed Enhanced Analysis", fixed_analysis_test))
-    
-    # Protocol Type Fixing Test
-    protocol_fixing_test = test_protocol_type_fixing()
-    all_tests.append(("Protocol Type Fixing", protocol_fixing_test))
+    if integration_available:
+        fixed_analysis_test = test_fixed_enhanced_analysis()
+        all_tests.append(("Fixed Enhanced Analysis", fixed_analysis_test))
+        
+        # Protocol Type Fixing Test
+        protocol_fixing_test = test_protocol_type_fixing()
+        all_tests.append(("Protocol Type Fixing", protocol_fixing_test))
+        
+        # Mock Data Generation Test
+        mock_data_test = test_mock_data_generation()
+        all_tests.append(("Mock Data Generation", mock_data_test))
+        
+        # Fixed Capabilities Demonstration
+        demo_test = demonstrate_fixed_day5()
+        all_tests.append(("Fixed Capabilities Demo", demo_test))
+    else:
+        print("\n⚠️  Integration layer not available - skipping integration tests")
+        all_tests.extend([
+            ("Fixed Enhanced Analysis", False),
+            ("Protocol Type Fixing", False),
+            ("Mock Data Generation", False),
+            ("Fixed Capabilities Demo", False)
+        ])
     
     # Standalone Day 5 Features
     standalone_test = test_standalone_day5_features()
     all_tests.append(("Standalone Day 5 Features", standalone_test))
     
-    # Mock Data Generation Test
-    mock_data_test = test_mock_data_generation()
-    all_tests.append(("Mock Data Generation", mock_data_test))
-    
-    # Fixed Capabilities Demonstration
-    demo_test = demonstrate_fixed_day5()
-    all_tests.append(("Fixed Capabilities Demo", demo_test))
+    # FastAPI Integration Test
+    fastapi_test = test_fastapi_integration()
+    all_tests.append(("FastAPI Integration", fastapi_test))
     
     # Test Summary
     print("\n" + "=" * 65)
@@ -366,10 +411,11 @@ def main():
     
     if passed == total:
         print("\n🎉 ALL FIXED TESTS PASSED! Day 5 Issues Resolved!")
-        print("✅ Protocol handling bug fixed")
+        print("✅ Import issues fixed")
         print("🔬 Enhanced analysis engine working perfectly")
         print("📊 Standalone features operational")
         print("🎭 Mock data generation functional")
+        print("🌐 FastAPI integration working")
         print("🌐 Ready for full integration")
     elif success_rate >= 80:
         print("\n⚠️  Most tests passed - minor issues remain")
@@ -380,6 +426,7 @@ def main():
     
     # Show what was fixed
     print(f"\n🔧 ISSUES RESOLVED")
+    print(f"   ✅ Fixed: Import path 'day5_integration_fix' → 'day5_integration'")
     print(f"   ✅ Fixed: 'str' object has no attribute 'value' error")
     print(f"   ✅ Fixed: Protocol string vs ProtocolType enum handling")
     print(f"   ✅ Added: Robust mock data for standalone operation")
