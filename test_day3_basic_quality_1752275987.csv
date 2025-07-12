@@ -1,8 +1,0 @@
-signal,message,quality_score,samples,coverage,update_rate,stuck_percentage,issues
-RPM,EngineData,86.35134448458732,50,100.0,9.999999999999998,0.0,noisy
-Throttle,EngineData,54.01376129219722,50,100.0,9.999999999999998,16.0,"stuck, noisy, out_of_range"
-Temperature,EngineData,0.0,50,100.0,9.999999999999998,100.0,stuck
-Speed,VehicleSpeed,62.344293738526154,50,100.0,10.0,12.0,noisy
-GatewayRPM,VehicleSpeed,86.35134448458732,50,100.0,10.0,0.0,noisy
-GatewaySpeed,SystemStatus,62.344293738526154,50,100.0,10.0,12.0,noisy
-SystemOK,SystemStatus,0.0,50,100.0,10.0,100.0,stuck
